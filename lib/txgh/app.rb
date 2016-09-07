@@ -92,6 +92,8 @@ module Txgh
       end
 
       github_repo_name = "#{payload['repository']['owner']['login']}/#{payload['repository']['name']}"
+      settings.logger.info("Github repository {github_config_branch}")
+
       config = Txgh::KeyManager.config_from_repo(github_repo_name)
 
       if authenticated_github_request?(config.github_repo, request)
