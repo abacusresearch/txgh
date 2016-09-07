@@ -53,6 +53,7 @@ module Txgh
       settings.logger.info(request.inspect)
 
       payload = Hash[URI.decode_www_form(request.body.read)]
+      settings.logger.info("Transifex project #{payload['project']}")
       config = Txgh::KeyManager.config_from_project(payload['project'])
 
       if payload.key?('translated')
@@ -91,8 +92,8 @@ module Txgh
         JSON.parse(request.body.read)
       end
 
-      github_repo_name = "#{payload['repository']['owner']['login']}/#{payload['repository']['name']}"
-      settings.logger.info("Github repository {github_config_branch}")
+      github_repo_name = "#{payload['repository']['owner']['name']}/#{payload['repository']['name']}"
+      settings.logger.info("Github repository #{github_repo_name}")
 
       config = Txgh::KeyManager.config_from_repo(github_repo_name)
 
@@ -107,6 +108,7 @@ module Txgh
         handler.execute
         status 200
       else
+        settings.logger.info("not authenticated")
         status 401
       end
     end
