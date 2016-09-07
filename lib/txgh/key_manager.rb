@@ -34,10 +34,13 @@ module Txgh
       private
 
       def yaml
-        path = if File.file?(File.join(Etc.getpwuid.dir, "txgh.yml"))
-          File.join(Etc.getpwuid.dir, "txgh.yml")
-        else
-          File.expand_path('./config/txgh.yml')
+        path = File.expand_path('./config/txgh.yml')
+        begin
+          if File.file?(File.join(Etc.getpwuid.dir, "txgh.yml"))
+            path = File.join(Etc.getpwuid.dir, "txgh.yml")
+          end
+        rescue ArgumentError
+          # Use default if getpwuid throws an error
         end
 
         YAML.load(ERB.new(File.read(path)).result)
