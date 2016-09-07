@@ -91,7 +91,7 @@ module Txgh
         JSON.parse(request.body.read)
       end
 
-      github_repo_name = "#{payload['repository']['owner']['name']}/#{payload['repository']['name']}"
+      github_repo_name = "#{payload['repository']['owner']['login']}/#{payload['repository']['name']}"
       config = Txgh::KeyManager.config_from_repo(github_repo_name)
 
       if authenticated_github_request?(config.github_repo, request)
