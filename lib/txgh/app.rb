@@ -65,6 +65,7 @@ module Txgh
       end
 
       if authenticated_transifex_request?(config.transifex_project, request)
+        settings.logger.info('Run handler')
         handler = transifex_handler_for(
           project: config.transifex_project,
           repo: config.github_repo,
@@ -77,6 +78,7 @@ module Txgh
         handler.execute
         status 200
       else
+        settings.logger.info('Request not authenticated')
         status 401
       end
     end
